@@ -4326,3 +4326,27 @@ votarBranco();
 ========================================================= */
 
 atualizarTela();
+
+/* =========================================================
+   MODO OFFLINE
+========================================================= */
+
+if ("serviceWorker" in navigator) {
+
+  window.addEventListener("load", () => {
+
+    navigator.serviceWorker
+      .register("./service-worker.js")
+      .then(() => {
+        console.log("Modo offline ativado.");
+      })
+      .catch((erro) => {
+        console.error(
+          "Erro ao ativar modo offline:",
+          erro
+        );
+      });
+
+  });
+
+}
