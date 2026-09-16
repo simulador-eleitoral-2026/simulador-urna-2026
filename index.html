@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  >
+
+  <title>Simulador de Treinamento - Eleições 2026</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+
+  <!-- =====================================================
+       AVISO PARA CELULAR NA VERTICAL
+  ====================================================== -->
+
+  <div id="aviso-orientacao">
+
+    <div class="icone-girar">
+      ↻
+    </div>
+
+    <h2>
+      Gire o celular
+    </h2>
+
+    <p>
+      Para uma melhor experiência, utilize o aparelho na horizontal.
+    </p>
+
+  </div>
+
+
+
+  <!-- =====================================================
+       ÁREA PRINCIPAL
+  ====================================================== -->
+
+  <main class="pagina">
+
+
+    <!-- IDENTIFICAÇÃO -->
+
+    <div class="identificacao">
+
+      <strong>
+        SIMULADOR DE TREINAMENTO
+      </strong>
+
+      <span>
+        Não é uma urna oficial da Justiça Eleitoral
+      </span>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         CORPO DA URNA
+    ====================================================== -->
+
+    <section class="urna">
+
+
+      <!-- ===================================================
+           LADO ESQUERDO - TELA
+      ==================================================== -->
+
+      <div class="lado-tela">
+
+
+        <div class="moldura-tela">
+
+
+          <!-- TELA DE VOTAÇÃO -->
+
+          <div
+            id="tela-votacao"
+            class="tela-votacao"
+          >
+
+
+            <!-- CABEÇALHO -->
+
+            <div class="cabecalho-tela">
+
+              <span>
+                SEU VOTO PARA
+              </span>
+
+            </div>
+
+
+
+            <!-- CARGO -->
+
+            <h1 id="cargo">
+              DEPUTADO FEDERAL
+            </h1>
+
+
+
+            <!-- ÁREA CENTRAL -->
+
+            <div class="area-conteudo">
+
+
+              <!-- DADOS DO VOTO -->
+
+              <div class="dados-voto">
+
+
+                <!-- NÚMERO -->
+
+                <div class="linha-numero">
+
+                  <span class="rotulo">
+                    Número:
+                  </span>
+
+
+                  <div
+                    id="numero-voto"
+                    class="numero-voto"
+                    aria-label="Número digitado"
+                  >
+                  </div>
+
+                </div>
+
+
+
+                <!-- DADOS DO CANDIDATO -->
+
+                <div
+                  id="dados-candidato"
+                  class="dados-candidato oculto"
+                >
+
+                  <p>
+
+                    <strong>
+                      Nome:
+                    </strong>
+
+                    <span id="nome-candidato">
+                    </span>
+
+                  </p>
+
+
+                  <p>
+
+                    <strong>
+                      Partido:
+                    </strong>
+
+                    <span id="partido-candidato">
+                    </span>
+
+                  </p>
+
+                </div>
+
+
+
+                <!-- MENSAGEM -->
+
+                <div
+                  id="mensagem-voto"
+                  class="mensagem-voto"
+                >
+                </div>
+
+
+              </div>
+
+
+
+              <!-- FOTO DO CANDIDATO -->
+
+              <div
+                id="area-foto"
+                class="area-foto oculto"
+              >
+
+                <img
+                  id="foto-candidato"
+                  src=""
+                  alt="Foto da candidatura"
+                >
+
+                <span id="legenda-foto">
+                  CANDIDATO
+                </span>
+
+              </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 INSTRUÇÕES
+            ================================================== -->
+
+            <div
+              id="instrucoes"
+              class="instrucoes"
+            >
+
+              <p>
+                Aperte a tecla:
+              </p>
+
+              <p>
+                <strong>CONFIRMA</strong>
+                para CONFIRMAR este voto
+              </p>
+
+              <p>
+                <strong>CORRIGE</strong>
+                para REINICIAR este voto
+              </p>
+
+            </div>
+
+
+          </div>
+
+
+
+          <!-- =================================================
+               TELA FINAL
+          ================================================== -->
+
+          <div
+            id="tela-fim"
+            class="tela-fim oculto"
+          >
+
+            <div class="fim-texto">
+              FIM
+            </div>
+
+
+            <button
+              id="btn-nova-simulacao"
+              class="btn-nova-simulacao"
+              type="button"
+            >
+
+              NOVA SIMULAÇÃO
+
+            </button>
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- ===================================================
+           LADO DIREITO - TECLADO
+      ==================================================== -->
+
+      <div class="lado-teclado">
+
+
+        <!-- PAINEL SUPERIOR -->
+
+        <div class="painel-superior">
+
+          <div class="titulo-equipamento">
+            SIMULADOR
+          </div>
+
+          <div class="subtitulo-equipamento">
+            ELEIÇÕES 2026
+          </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             TECLADO NUMÉRICO
+        ================================================== -->
+
+        <div class="teclado-numerico">
+
+
+          <!-- 1 -->
+
+          <button
+            class="tecla-numero"
+            data-numero="1"
+            type="button"
+            aria-label="Número 1"
+          >
+
+            <span class="numero-label">
+              1
+            </span>
+
+            <span
+              class="braille"
+              aria-hidden="true"
+            >
+              ⠁
+            </span>
+
+          </button>
+
+
+
+          <!-- 2 -->
+
+          <button
+            class="tecla-numero"
+            data-numero="2"
+            type="button"
+            aria-label="Número 2"
+          >
+
+            <span class="numero-label">
+              2
+            </span>
+
+            <span
+              class="braille"
+              aria-hidden="true"
+            >
+              ⠃
+            </span>
+
+          </button>
+
+
+
+          <!-- 3 -->
+
+          <button
+            class="tecla-numero"
+            data-numero="3"
+            type="button"
+            aria-label="Número 3"
+          >
+
+            <span class="numero-label">
+              3
+            </span>
+
+            <span
+              class="braille"
+              aria-hidden="true"
+            >
+              ⠉
+            </span>
+
+          </button>
+
+
+
+          <!-- 4 -->
+
+          <button
+            class="tecla-numero"
+            data-numero="4"
+            type="button"
+            aria-label="Número 4"
+          >
+
+            <span class="numero-label">
+              4
+            </span>
+
+            <span
+              class="braille"
+              aria-hidden="true"
+            >
+              ⠙
+            </span>
+
+          </button>
+
+
+
+          <!-- 5 -->
+
+          <button
+            class="tecla-numero"
+            data-numero="5"
+            type="button"
+            aria-label="Número 5"
+          >
+
+            <span class="numero-label">
+              5
+            </span>
+
+            <span
+              class="braille"
+              aria-hidden="true"
+            >
+              ⠑
+            </span>
+
+          </button>
+
+
+
+          <!-- 6 -->
+
+          <button
+            class="tecla-numero"
+            data-numero="6"
+            type="button"
+            aria-label="Número 6"
+          >
+
+            <span class="numero-label">
+              6
+            </span>
+
+            <span
+              class="braille"
+              aria-hidden="true"
+            >
+              ⠋
+            </span>
+
+          </button>
+
+
+
+          <!-- 7 -->
+
+          <button
+            class="tecla-numero"
+            data-numero="7"
+            type="button"
+            aria-label="Número 7"
+          >
+
+            <span class="numero-label">
+              7
+            </span>
+
+            <span
+              class="braille"
+              aria-hidden="true"
+            >
+              ⠛
+            </span>
+
+          </button>
+
+
+
+          <!-- 8 -->
+
+          <button
+            class="tecla-numero"
+            data-numero="8"
+            type="button"
+            aria-label="Número 8"
+          >
+
+            <span class="numero-label">
+              8
+            </span>
+
+            <span
+              class="braille"
+              aria-hidden="true"
+            >
+              ⠓
+            </span>
+
+          </button>
+
+
+
+          <!-- 9 -->
+
+          <button
+            class="tecla-numero"
+            data-numero="9"
+            type="button"
+            aria-label="Número 9"
+          >
+
+            <span class="numero-label">
+              9
+            </span>
+
+            <span
+              class="braille"
+              aria-hidden="true"
+            >
+              ⠊
+            </span>
+
+          </button>
+
+
+
+          <!-- ESPAÇO -->
+
+          <div></div>
+
+
+
+          <!-- 0 -->
+
+          <button
+            class="tecla-numero"
+            data-numero="0"
+            type="button"
+            aria-label="Número 0"
+          >
+
+            <span class="numero-label">
+              0
+            </span>
+
+            <span
+              class="braille"
+              aria-hidden="true"
+            >
+              ⠚
+            </span>
+
+          </button>
+
+
+
+          <!-- ESPAÇO -->
+
+          <div></div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             BOTÕES DE AÇÃO
+        ================================================== -->
+
+        <div class="teclas-acao">
+
+
+          <!-- BRANCO -->
+
+          <button
+            id="btn-branco"
+            class="tecla-acao branco"
+            type="button"
+            aria-label="Voto em branco"
+          >
+
+            <span class="acao-texto">
+              BRANCO
+            </span>
+
+            <span
+              class="braille-acao"
+              aria-hidden="true"
+            >
+              ⠃⠗⠁⠝⠉⠕
+            </span>
+
+          </button>
+
+
+
+          <!-- CORRIGE -->
+
+          <button
+            id="btn-corrige"
+            class="tecla-acao corrige"
+            type="button"
+            aria-label="Corrige"
+          >
+
+            <span class="acao-texto">
+              CORRIGE
+            </span>
+
+            <span
+              class="braille-acao"
+              aria-hidden="true"
+            >
+              ⠉⠕⠗⠗⠊⠛⠑
+            </span>
+
+          </button>
+
+
+
+          <!-- CONFIRMA -->
+
+          <button
+            id="btn-confirma"
+            class="tecla-acao confirma"
+            type="button"
+            aria-label="Confirma"
+          >
+
+            <span class="acao-texto">
+              CONFIRMA
+            </span>
+
+            <span
+              class="braille-acao"
+              aria-hidden="true"
+            >
+              ⠉⠕⠝⠋⠊⠗⠍⠁
+            </span>
+
+          </button>
+
+
+        </div>
+
+
+      </div>
+
+
+    </section>
+
+
+  </main>
+
+
+
+  <!-- =====================================================
+       ÁUDIOS
+       COLOCAREMOS OS ARQUIVOS NA PASTA assets/sons
+  ====================================================== -->
+
+  <audio
+    id="audio-tecla"
+    src="assets/sons/tecla.mp3"
+    preload="auto"
+  ></audio>
+
+
+  <audio
+    id="audio-confirma"
+    src="assets/sons/confirma.mp3"
+    preload="auto"
+  ></audio>
+
+
+  <audio
+    id="audio-fim"
+    src="assets/sons/fim.mp3"
+    preload="auto"
+  ></audio>
+
+
+
+  <!-- =====================================================
+       JAVASCRIPT
+  ====================================================== -->
+
+  <script src="app.js"></script>
+
+
+</body>
+
+</html>
