@@ -1,4 +1,4 @@
-const CACHE_NAME = "simulador-urna-2026-v4";
+const CACHE_NAME = "simulador-urna-2026-v5";
 
 const BASE_URL = self.registration.scope;
 

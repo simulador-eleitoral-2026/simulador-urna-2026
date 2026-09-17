@@ -1,4 +1,4 @@
-/* =========================================================
+﻿/* =========================================================
    SIMULADOR DE TREINAMENTO - ELEIÇÕES 2026
    LÓGICA PRINCIPAL
 ========================================================= */
@@ -3572,6 +3572,7 @@ let etapaAtual = 0;
 let numeroDigitado = "";
 let votoBranco = false;
 let votacaoFinalizada = false;
+let numeroSenadorPrimeiraVaga = null;
 
 
 /* =========================================================
@@ -3845,6 +3846,23 @@ function verificarCandidato() {
     candidatos[chave];
 
 
+  const senadorRepetido =
+    etapa.cargo === "SENADOR - 2ª VAGA" &&
+    numeroSenadorPrimeiraVaga !== null &&
+    numeroDigitado === numeroSenadorPrimeiraVaga;
+
+  if (senadorRepetido) {
+
+    esconderCandidato();
+
+    mensagemVotoElemento.textContent =
+      "VOTO NULO";
+
+    return;
+
+  }
+
+
   if (candidato) {
 
     mensagemVotoElemento.textContent =
@@ -4063,6 +4081,25 @@ function confirmarVoto() {
   }
 
 
+  if (
+    etapa.cargo === "SENADOR - 1ª VAGA"
+  ) {
+
+    const chavePrimeiroSenador =
+      gerarChaveCandidato(
+        etapa.cargo,
+        numeroDigitado
+      );
+
+    numeroSenadorPrimeiraVaga =
+      !votoBranco &&
+      candidatos[chavePrimeiroSenador]
+        ? numeroDigitado
+        : null;
+
+  }
+
+
   somConfirmacao();
 
 
@@ -4162,6 +4199,9 @@ function novaSimulacao() {
 
   votacaoFinalizada =
     false;
+
+  numeroSenadorPrimeiraVaga =
+    null;
 
 
   telaFim
