@@ -4350,3 +4350,105 @@ if ("serviceWorker" in navigator) {
   });
 
 }
+
+/* =========================================================
+   INSTALAÇÃO DO APLICATIVO
+========================================================= */
+
+let eventoInstalacao = null;
+
+const btnInstalarApp =
+  document.getElementById("btn-instalar-app");
+
+const estaInstalado = () =>
+  window.matchMedia("(display-mode: standalone)").matches ||
+  window.navigator.standalone === true;
+
+if (estaInstalado() && btnInstalarApp) {
+  btnInstalarApp.style.display = "none";
+}
+
+window.addEventListener(
+  "beforeinstallprompt",
+  (evento) => {
+
+    evento.preventDefault();
+
+    eventoInstalacao = evento;
+
+  }
+);
+
+if (btnInstalarApp) {
+
+  btnInstalarApp.addEventListener(
+    "click",
+    async () => {
+
+      if (estaInstalado()) {
+        btnInstalarApp.style.display = "none";
+        return;
+      }
+
+      /* ANDROID / CHROME / NAVEGADORES COMPATÍVEIS */
+
+      if (eventoInstalacao) {
+
+        eventoInstalacao.prompt();
+
+        const resultado =
+          await eventoInstalacao.userChoice;
+
+        if (resultado.outcome === "accepted") {
+          btnInstalarApp.style.display = "none";
+        }
+
+        eventoInstalacao = null;
+
+        return;
+      }
+
+
+      /* IPHONE / IPAD */
+
+      const ehIOS =
+        /iphone|ipad|ipod/i.test(
+          navigator.userAgent
+        );
+
+      if (ehIOS) {
+
+        alert(
+          "Para instalar no iPhone:\n\n" +
+          "1. Toque em Compartilhar ⬆️\n" +
+          "2. Toque em “Adicionar à Tela de Início”\n" +
+          "3. Toque em “Adicionar”"
+        );
+
+        return;
+      }
+
+
+      /* OUTROS NAVEGADORES */
+
+      alert(
+        "Para instalar:\n\n" +
+        "Abra o menu do navegador (⋮) e toque em " +
+        "“Instalar app” ou “Adicionar à tela inicial”."
+      );
+
+    }
+  );
+
+}
+
+window.addEventListener(
+  "appinstalled",
+  () => {
+
+    if (btnInstalarApp) {
+      btnInstalarApp.style.display = "none";
+    }
+
+  }
+);
