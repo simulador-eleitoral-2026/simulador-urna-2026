@@ -1,4 +1,4 @@
-const CACHE_NAME = "simulador-urna-2026-v2";
+const CACHE_NAME = "simulador-urna-2026-v3";
 
 const BASE_URL = self.registration.scope;
 
@@ -122,6 +122,179 @@ async function descobrirAssets() {
 
 
 /* =========================================================
+   TRATAMENTO DE ÁUDIO COM RANGE
+   Corrige reprodução de MP3 em navegadores que pedem
+   somente uma parte do arquivo armazenado no cache.
+========================================================= */
+
+async function responderRange(request, cache) {
+
+  const rangeHeader =
+    request.headers.get("range");
+
+  if (!rangeHeader) {
+    return null;
+  }
+
+
+  /*
+    Procura primeiro a versão completa do arquivo
+    já armazenada no cache.
+  */
+
+  let respostaCompleta =
+    await cache.match(
+      request.url,
+      {
+        ignoreSearch: true
+      }
+    );
+
+
+  /*
+    Se ainda não estiver no cache e houver internet,
+    baixa o arquivo completo sem o cabeçalho Range.
+  */
+
+  if (!respostaCompleta) {
+
+    try {
+
+      const respostaRede =
+        await fetch(
+          request.url,
+          {
+            cache: "no-store"
+          }
+        );
+
+      if (
+        respostaRede &&
+        respostaRede.ok
+      ) {
+
+        respostaCompleta =
+          respostaRede.clone();
+
+        await cache.put(
+          request.url,
+          respostaRede.clone()
+        );
+
+      }
+
+    } catch (erro) {
+
+      return null;
+
+    }
+
+  }
+
+
+  if (!respostaCompleta) {
+    return null;
+  }
+
+
+  const buffer =
+    await respostaCompleta.arrayBuffer();
+
+  const tamanhoTotal =
+    buffer.byteLength;
+
+
+  const correspondencia =
+    /bytes=(\d+)-(\d*)/.exec(
+      rangeHeader
+    );
+
+
+  if (!correspondencia) {
+    return null;
+  }
+
+
+  const inicio =
+    Number(
+      correspondencia[1]
+    );
+
+
+  let fim =
+    correspondencia[2]
+      ? Number(correspondencia[2])
+      : tamanhoTotal - 1;
+
+
+  if (
+    inicio >= tamanhoTotal
+  ) {
+
+    return new Response(
+      null,
+      {
+        status: 416,
+
+        headers: {
+          "Content-Range":
+            `bytes */${tamanhoTotal}`
+        }
+      }
+    );
+
+  }
+
+
+  fim =
+    Math.min(
+      fim,
+      tamanhoTotal - 1
+    );
+
+
+  const parte =
+    buffer.slice(
+      inicio,
+      fim + 1
+    );
+
+
+  const headers =
+    new Headers(
+      respostaCompleta.headers
+    );
+
+
+  headers.set(
+    "Content-Range",
+    `bytes ${inicio}-${fim}/${tamanhoTotal}`
+  );
+
+  headers.set(
+    "Accept-Ranges",
+    "bytes"
+  );
+
+  headers.set(
+    "Content-Length",
+    String(parte.byteLength)
+  );
+
+
+  return new Response(
+    parte,
+    {
+      status: 206,
+      statusText: "Partial Content",
+      headers
+    }
+  );
+
+}
+
+
+/* =========================================================
    INSTALAÇÃO
 ========================================================= */
 
@@ -150,8 +323,10 @@ self.addEventListener(
 
         }
 
+
         const assets =
           await descobrirAssets();
+
 
         await Promise.allSettled(
 
@@ -164,6 +339,7 @@ self.addEventListener(
           )
 
         );
+
 
         self.skipWaiting();
 
@@ -190,6 +366,7 @@ self.addEventListener(
         const nomes =
           await caches.keys();
 
+
         await Promise.all(
 
           nomes.map(
@@ -209,6 +386,7 @@ self.addEventListener(
           )
 
         );
+
 
         await self.clients.claim();
 
@@ -252,17 +430,19 @@ self.addEventListener(
               CACHE_NAME
             );
 
+
           try {
 
             /*
-              Com internet:
-              tenta buscar a versão atual.
+              COM INTERNET:
+              busca a versão atual.
             */
 
             const resposta =
               await fetch(
                 evento.request
               );
+
 
             if (
               resposta &&
@@ -276,20 +456,22 @@ self.addEventListener(
 
             }
 
+
             return resposta;
+
 
           } catch (erro) {
 
             /*
               SEM INTERNET:
-              abre obrigatoriamente o index.html
-              salvo no aparelho.
+              abre o index.html salvo.
             */
 
             const pagina =
               await cache.match(
                 caminho("index.html")
               );
+
 
             if (pagina) {
               return pagina;
@@ -301,6 +483,7 @@ self.addEventListener(
                 BASE_URL
               );
 
+
             if (inicio) {
               return inicio;
             }
@@ -310,6 +493,7 @@ self.addEventListener(
               "Simulador temporariamente indisponível.",
               {
                 status: 503,
+
                 headers: {
                   "Content-Type":
                     "text/plain; charset=utf-8"
@@ -322,6 +506,7 @@ self.addEventListener(
         })()
 
       );
+
 
       return;
 
@@ -341,6 +526,35 @@ self.addEventListener(
             CACHE_NAME
           );
 
+
+        /* =================================================
+           ÁUDIO COM REQUISIÇÃO RANGE
+        ================================================= */
+
+        if (
+          evento.request.headers.has(
+            "range"
+          )
+        ) {
+
+          const respostaRange =
+            await responderRange(
+              evento.request,
+              cache
+            );
+
+
+          if (respostaRange) {
+            return respostaRange;
+          }
+
+        }
+
+
+        /* =================================================
+           CACHE NORMAL
+        ================================================= */
+
         const armazenado =
           await cache.match(
             evento.request,
@@ -348,6 +562,7 @@ self.addEventListener(
               ignoreSearch: true
             }
           );
+
 
         if (armazenado) {
           return armazenado;
@@ -360,6 +575,7 @@ self.addEventListener(
             await fetch(
               evento.request
             );
+
 
           if (
             resposta &&
@@ -376,7 +592,9 @@ self.addEventListener(
 
           }
 
+
           return resposta;
+
 
         } catch (erro) {
 
