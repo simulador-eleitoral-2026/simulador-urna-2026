@@ -10,26 +10,6 @@
 
 const etapas = [
   {
-    cargo: "DEPUTADO FEDERAL",
-    digitos: 4
-  },
-  {
-    cargo: "DEPUTADO ESTADUAL",
-    digitos: 5
-  },
-  {
-    cargo: "SENADOR - 1ª VAGA",
-    digitos: 3
-  },
-  {
-    cargo: "SENADOR - 2ª VAGA",
-    digitos: 3
-  },
-  {
-    cargo: "GOVERNADOR",
-    digitos: 2
-  },
-  {
     cargo: "PRESIDENTE",
     digitos: 2
   }
@@ -3844,6 +3824,21 @@ function verificarCandidato() {
 
   const candidato =
     candidatos[chave];
+
+    const presidenteForaDoSegundoTurno =
+  etapa.cargo === "PRESIDENTE" &&
+  !["13", "22"].includes(numeroDigitado);
+
+if (presidenteForaDoSegundoTurno) {
+
+  esconderCandidato();
+
+  mensagemVotoElemento.textContent =
+    "VOTO NULO";
+
+  return;
+
+}
 
 
   const senadorRepetido =
